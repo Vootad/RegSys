@@ -28,13 +28,13 @@ class Lesson(models.Model):
     # ارتباط چند به چند: یک درس می‌تواند چندین زمان داشته باشد
     time_slots = models.ManyToManyField(TimeSlot, verbose_name="زمان‌های برگزاری")
 
-    # professor = models.ForeignKey(
-    #     Professor,
-    #     on_delete=models.SET_NULL,
-    #     null=True,
-    #     blank=True,
-    #     related_name="lessons"
-    # )
+    professor = models.ForeignKey(
+        Professor,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="lessons"
+    )
 
 
     def __str__(self):
