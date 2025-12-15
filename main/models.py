@@ -1,4 +1,5 @@
 from django.db import models
+from accounts.models import Professor
 
 # مدل زمان‌بندی (برای مدیریت روز و ساعت کلاس‌ها)
 class TimeSlot(models.Model):
@@ -26,6 +27,15 @@ class Lesson(models.Model):
     capacity = models.PositiveIntegerField(verbose_name="ظرفیت")
     # ارتباط چند به چند: یک درس می‌تواند چندین زمان داشته باشد
     time_slots = models.ManyToManyField(TimeSlot, verbose_name="زمان‌های برگزاری")
-    
+
+    # professor = models.ForeignKey(
+    #     Professor,
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     related_name="lessons"
+    # )
+
+
     def __str__(self):
         return self.title
