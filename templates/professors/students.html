@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}لیست دانشجویان{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+    <h2 style="margin: 0;">
+        <i class="fa-solid fa-user-graduate"></i> لیست دانشجویان درس: {{ course.name }}
+    </h2>
+    <a href="{% url 'professors:my_courses' %}" class="btn-action" style="background: #6c757d; text-decoration: none;">
+        <i class="fa-solid fa-arrow-left"></i> بازگشت به لیست دروس
+    </a>
+</div>
+
+<div class="card-container">
+    <table>
+        <thead>
+            <tr>
+                <th>شماره دانشجویی</th>
+                <th>نام و نام خانوادگی</th>
+                <th>وضعیت تحصیلی</th>
+                <th>مدیریت</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+            <tr>
+                <td style="font-family: 'Courier New', monospace; font-weight: bold; color: #2E8B57;">
+                    {{ enrollment.student.username }}
+                </td>
+                <td>{{ enrollment.student.get_full_name }}</td>
+                <td>
+                    <span style="background: #e8f7ef; color: #2E8B57; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold;">
+                        <i class="fa-solid fa-check-circle"></i> فعال
+                    </span>
+                </td>
+                <td>
+                    <form action="{% url 'professors:remove_student' enrollment.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-action btn-red" onclick="return confirm('آیا از حذف این دانشجو مطمئن هستید؟')">
+                            <i class="fa-solid fa-user-slash"></i> حذف از کلاس
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
