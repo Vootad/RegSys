@@ -10,10 +10,7 @@ urlpatterns = [
     path('', lambda request: redirect('accounts/login/')), 
     path('admin/', admin.site.urls),
     path('accounts/', include('apps.accounts.urls')),
-    path('students/', include('apps.students.urls')),
-    path('professors/', include('apps.professors.urls')),
-    path('courses/', include('apps.courses.urls')),
-    
+  
     # آدرس‌های مربوط به JWT را اینجا اضافه کن:
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
