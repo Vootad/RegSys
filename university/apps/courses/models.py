@@ -32,3 +32,16 @@ class Course(models.Model):
     start_time = models.TimeField(verbose_name="زمان شروع")
     end_time = models.TimeField(verbose_name="زمان پایان")
     location = models.CharField(max_length=100, verbose_name="مکان برگزاری")
+    prerequisites = models.ManyToManyField(
+        'self', 
+        symmetrical=False, 
+        blank=True, 
+        verbose_name="پیش‌نیازها"
+    )
+
+    class Meta:
+        verbose_name = "درس"
+        verbose_name_plural = "دروس"
+
+    def __str__(self):
+        return f"{self.name} ({self.get_day_display()})"
