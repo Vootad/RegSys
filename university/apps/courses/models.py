@@ -45,3 +45,10 @@ class Course(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_day_display()})"
+    class SystemSetting(models.Model):
+     min_units = models.PositiveIntegerField(default=12, verbose_name="حداقل واحد")
+     max_units = models.PositiveIntegerField(default=20, verbose_name="حداکثر واحد")
+
+    class Meta:
+        verbose_name = "تنظیمات سیستم"
+        verbose_name_plural = "تنظیمات سیستم"
