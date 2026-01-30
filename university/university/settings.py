@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'django_filters',
     'apps.accounts.apps.AccountsConfig',
-     'apps.students.apps.StudentsConfig',
-     'apps.courses.apps.CoursesConfig',
+   ]
+    
 
-]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
