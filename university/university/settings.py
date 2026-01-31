@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'apps.accounts.apps.AccountsConfig',
+    'apps.students.apps.StudentsConfig',
+    'apps.professors.apps.ProfessorsConfig',
+    'apps.courses.apps.CoursesConfig',
    ]
     
 
