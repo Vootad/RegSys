@@ -10,3 +10,10 @@ from django.shortcuts import redirect
 
 def student_dashboard(request):
     return redirect('courses:dashboard')
+
+@login_required
+def enroll_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    student = request.user
+    settings = SystemSetting.objects.first()
+    max_val = settings.max_units if settings else 20
