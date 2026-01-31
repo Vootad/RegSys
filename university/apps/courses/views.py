@@ -48,3 +48,34 @@ def delete_course(request, course_id):
         messages.warning(request, "درس مورد نظر حذف شد.")
     return redirect('courses:manage_list')
 
+# --- بخش دانشجو (Student) ---
+
+@login_required
+def student_dashboard(request):
+    my_custom_days = [
+        ('1', 'شنبه'), ('2', 'یکشنبه'), ('3', 'دوشنبه'),
+        ('4', 'سه‌شنبه'), ('5', 'چهارشنبه'), ('6', 'پنج‌شنبه'),
+    ]
+    
+    # ۱. گرفتن تمام رکوردهای ثبت‌نام این دانشجو
+    user_enrollments = Enrollment.objects.filter(student=request.user)
+    
+    # ۲. استخراج درس‌ها برای نمایش در جدول و برنامه هفتگی
+    enrolled_courses = [e.course for e in user_enrollments]
+    
+    # ۳. گرفتن ID درس‌ها برای چک کردن وضعیت (اخذ شده/نشده) در تمپلیت
+    enrolled_ids = user_enrollments.values_list('course_id', flat=True)
+
+    # ۴. مدیریت جستجو و نمایش لیست کل دروس
+    query = request.GET.get('q')
+    all_courses = Course.objects.all()
+    if query:
+        all_courses = all_courses.filter(name__icontains=query)
+
+    context = {
+        'my_custom_days': my_custom_days,
+        'enrolled_courses': enrolled_courses,
+        'enrolled_ids': enrolled_ids,
+        'all_courses': all_courses,
+    }
+    return render(request, 'students/dashboard.html', context)
