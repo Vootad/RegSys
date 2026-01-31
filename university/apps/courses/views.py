@@ -79,3 +79,22 @@ def student_dashboard(request):
         'all_courses': all_courses,
     }
     return render(request, 'students/dashboard.html', context)
+@login_required
+def enroll_course(request, course_id):
+    """تابع اخذ واحد: ایجاد یک رکورد در جدول Enrollment"""
+    if request.method == 'POST':
+        course = get_object_or_404(Course, id=course_id)
+        
+        # بررسی اینکه دانشجو قبلاً این درس را اخذ نکرده باشد
+        already_enrolled = Enrollment.objects.filter(student=request.user, course=course).exists()
+        
+        if already_enrolled:
+            messages.info(request, "این درس قبلاً در لیست شما موجود است.")
+        elif Enrollment.objects.filter(course=course).count() >= course.capacity:
+            messages.error(request, "ظرفیت این درس تکمیل شده است.")
+        else:
+            # ایجاد رکورد جدید (ترم را می‌توانید داینامیک کنید)
+            Enrollment.objects.create(student=request.user, course=course, term="1402-2")
+            messages.success(request, f"درس {course.name} با موفقیت اخذ شد.")
+            
+    return redirect('courses:dashboard')
