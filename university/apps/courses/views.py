@@ -98,3 +98,15 @@ def enroll_course(request, course_id):
             messages.success(request, f"درس {course.name} با موفقیت اخذ شد.")
             
     return redirect('courses:dashboard')
+@login_required
+def drop_course(request, course_id):
+    """تابع حذف واحد: پاک کردن رکورد از جدول Enrollment"""
+    if request.method == 'POST':
+        enrollment = Enrollment.objects.filter(student=request.user, course_id=course_id).first()
+        if enrollment:
+            enrollment.delete()
+            messages.warning(request, "درس با موفقیت از لیست شما حذف شد.")
+        else:
+            messages.error(request, "خطایی رخ داد؛ درس یافت نشد.")
+            
+    return redirect('courses:dashboard')
