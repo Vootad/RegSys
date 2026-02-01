@@ -20,3 +20,7 @@ class EnrollmentLogicTest(TestCase):
         Enrollment.objects.create(student=self.student, course=self.course1)
         student2 = User.objects.create_user(username='std2', password='123', is_student=True)
         response = self.client.login(username='std2', password='123')
+
+    def test_time_conflict(self):
+        Enrollment.objects.create(student=self.student, course=self.course1)
+        # چک کردن تداخل در منطق ویو برای course2
