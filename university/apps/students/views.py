@@ -23,9 +23,17 @@ def enroll_course(request, course_id):
         return redirect('students:dashboard')
 
 
+    if course.enrolled_students.count() >= course.capacity:
+        messages.error(request, "ظرفیت این درس تکمیل شده است.")
+        return redirect('students:dashboard')
+
+
+
 @login_required
 def drop_course(request, enrollment_id):
     enrollment = get_object_or_404(Enrollment, id=enrollment_id, student=request.user)
     enrollment.delete()
     messages.success(request, "واحد مورد نظر با موفقیت حذف شد.")
     return redirect('students:dashboard')
+
+
