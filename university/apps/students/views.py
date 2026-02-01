@@ -18,6 +18,9 @@ def enroll_course(request, course_id):
     settings = SystemSetting.objects.first()
     max_val = settings.max_units if settings else 20
 
+    if Enrollment.objects.filter(student=student, course=course).exists():
+        messages.error(request, "این درس قبلاً در این ترم اخذ شده است.")
+        return redirect('students:dashboard')
 
 
 @login_required
