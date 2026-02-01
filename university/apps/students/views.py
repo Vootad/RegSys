@@ -42,6 +42,9 @@ def enroll_course(request, course_id):
         messages.error(request, f"سقف مجاز واحدها ({max_val}) رعایت نشده است.")
         return redirect('students:dashboard')
 
+    Enrollment.objects.create(student=student, course=course)
+    messages.success(request, f"درس {course.name} با موفقیت به لیست دروس شما اضافه شد.")
+    return redirect('students:dashboard')
 
 
 @login_required
