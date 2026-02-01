@@ -31,6 +31,12 @@ def enroll_course(request, course_id):
             messages.error(request, f"خطا در پیش‌نیاز: ابتدا باید درس {prereq.name} را بگذرانید.")
             return redirect('students:dashboard')
 
+    student_enrollments = Enrollment.objects.filter(student=student)
+    for emp in student_enrollments:
+        if emp.course.day == course.day:
+            if not (course.start_time >= emp.course.end_time or course.end_time <= emp.course.start_time):
+                messages.error(request, f"تداخل زمانی با درس {emp.course.name} وجود دارد.")
+                return redirect('students:dashboard')
 
 
 
