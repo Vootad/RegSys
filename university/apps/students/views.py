@@ -22,10 +22,15 @@ def enroll_course(request, course_id):
         messages.error(request, "این درس قبلاً در این ترم اخذ شده است.")
         return redirect('students:dashboard')
 
-
     if course.enrolled_students.count() >= course.capacity:
         messages.error(request, "ظرفیت این درس تکمیل شده است.")
         return redirect('students:dashboard')
+
+    for prereq in course.prerequisites.all():
+        if not Enrollment.objects.filter(student=student, course=prereq, is_passed=True).exists():
+            messages.error(request, f"خطا در پیش‌نیاز: ابتدا باید درس {prereq.name} را بگذرانید.")
+            return redirect('students:dashboard')
+
 
 
 
