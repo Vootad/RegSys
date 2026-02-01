@@ -38,6 +38,10 @@ def enroll_course(request, course_id):
                 messages.error(request, f"تداخل زمانی با درس {emp.course.name} وجود دارد.")
                 return redirect('students:dashboard')
 
+    if student_enrollments.count() >= max_val:
+        messages.error(request, f"سقف مجاز واحدها ({max_val}) رعایت نشده است.")
+        return redirect('students:dashboard')
+
 
 
 @login_required
