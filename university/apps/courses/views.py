@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -48,6 +45,7 @@ def delete_course(request, course_id):
         messages.warning(request, "درس مورد نظر حذف شد.")
     return redirect('courses:manage_list')
 
+
 # --- بخش دانشجو (Student) ---
 
 @login_required
@@ -79,6 +77,7 @@ def student_dashboard(request):
         'all_courses': all_courses,
     }
     return render(request, 'students/dashboard.html', context)
+
 @login_required
 def enroll_course(request, course_id):
     """تابع اخذ واحد: ایجاد یک رکورد در جدول Enrollment"""
@@ -98,6 +97,7 @@ def enroll_course(request, course_id):
             messages.success(request, f"درس {course.name} با موفقیت اخذ شد.")
             
     return redirect('courses:dashboard')
+
 @login_required
 def drop_course(request, course_id):
     """تابع حذف واحد: پاک کردن رکورد از جدول Enrollment"""
