@@ -19,3 +19,15 @@ class EnrollmentValidator:
                 # چک کردن تداخل بازه‌های زمانی
                 if not (course.end_time <= enrollment.course.start_time or course.start_time >= enrollment.course.end_time):
                     return False, f"تداخل زمانی با درس {enrollment.course.name}."
+     # 4. بررسی پیش‌نیاز (باید قبلاً پاس شده باشد)
+        for pre in course.prerequisites.all():
+            if not Enrollment.objects.filter(student=student, course=pre, is_passed=True).exists():
+                return False, f"شما درس پیش‌نیاز {pre.name} را نگذرانده‌اید."
+
+        # 5. بررسی سقف واحد (فرض هر درس 3 واحد)
+        settings = SystemSetting.objects.first()
+        max_limit = settings.max_units if settings else 20
+        if (current_enrollments.count() * 3) + 3 > max_limit:
+            return False, "تعداد واحدهای شما از سقف مجاز بیشتر می‌شود."
+
+        return True, None
